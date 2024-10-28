@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Jack's Oranges Storefront - Sign Up</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="stylesheet.css">
+
+    <style>
+        h1 {
+            color: rgb(252, 251, 250);
+        }
+
+        input.is-invalid {
+            border-color: red;
+        }
+
+        .invalid-feedback {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: rgb(255, 206, 127);">
+    <header>
+        <div class="banner text-center py-4">
+            <h1>Jack's Oranges Storefront</h1>
+        </div>
+    </header>
+    <hr>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Jack's Oranges</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="SoloL5.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shopping Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="SoloL5.html">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <hr>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Sign Up</h2>
+                <form id="signupForm" onsubmit="return handleSubmit(event)">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter username" onfocusout="validate(this)">
+                        <div class="invalid-feedback">Username is required.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" onfocusout="validate(this)">
+                        <div class="invalid-feedback">Please enter a valid email (e.g., joe@test.com).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password" onfocusout="validate(this)">
+                        <div class="invalid-feedback">Password is required.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" onfocusout="validate(this)">
+                        <div class="invalid-feedback">Passwords must match.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+                <div id="jsonOutput" class="mt-4" style="display: none;">
+                    <h3>Submitted JSON Data</h3>
+                    <pre id="jsonData" style="background-color: #f8f9fa; padding: 10px; border: 1px solid #ddd;"></pre>
+                </div>    
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <hr>
+
+    <footer class="text-center mt-5">
+        <p>Here are some helpful links:</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Terms of Use</a></li>
+            <li class="list-inline-item"><a href="#">Cookie and privacy policy</a></li>
+            <li class="list-inline-item"><a href="#">Copyright</a></li>
+        </ul>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function validate(obj) {
+            const id = obj.id;
+            const value = obj.value.trim();
+            
+            obj.classList.remove('is-invalid');
+            obj.nextElementSibling.style.display = 'none';
+
+            if (id === 'username' && value === '') {
+                invalidInput(obj, 'Username is required.');
+            } else if (id === 'email' && !validateEmail(value)) {
+                invalidInput(obj, 'Please enter a valid email (e.g., joe@test.com).');
+            } else if (id === 'password' && value === '') {
+                invalidInput(obj, 'Password is required.');
+            } else if (id === 'confirmPassword' && value !== document.getElementById('password').value) {
+                invalidInput(obj, 'Passwords must match.');
+            }
+        }
+
+        function invalidInput(input, message) {
+            input.classList.add('is-invalid');
+            input.nextElementSibling.textContent = message;
+            input.nextElementSibling.style.display = 'block';
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validateForm() {
+            const inputs = document.querySelectorAll('#signupForm input');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid');
+                input.nextElementSibling.style.display = 'none';
+
+                if (input.value.trim() === '') {
+                    invalidInput(input, `${input.previousElementSibling.textContent} is required.`);
+                    isValid = false;
+                } else if (input.id === 'email' && !validateEmail(input.value.trim())) {
+                    invalidInput(input, 'Please enter a valid email.');
+                    isValid = false;
+                } else if (input.id === 'confirmPassword' && input.value !== document.getElementById('password').value) {
+                    invalidInput(input, 'Passwords must match.');
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            if (!validateForm()) return;
+
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value
+            };
+
+            document.getElementById('jsonData').textContent = JSON.stringify(formData, null, 2);
+            document.getElementById('jsonOutput').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
